@@ -165,15 +165,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="LeetCode–704-二分查找"><a href="#LeetCode–704-二分查找" class="headerlink" title="LeetCode–704.二分查找"></a>LeetCode–704.二分查找</h2><p><strong>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</strong></p>
-<p>示例 1:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: nums = [-1,0,3,5,9,12], target = 9</span><br><span class="line">输出: 4</span><br><span class="line">解释: 9 出现在 nums 中并且下标为 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line"></span><br><span class="line">输入: nums = [-1,0,3,5,9,12], target = 9</span><br><span class="line">输出: 4</span><br><span class="line">解释: 9 出现在 nums 中并且下标为 4</span><br><span class="line"></span><br><span class="line">示例 2:</span><br><span class="line"></span><br><span class="line">输入: nums = [-1,0,3,5,9,12], target = 2</span><br><span class="line">输出: -1</span><br><span class="line">解释: 2 不存在 nums 中因此返回 -1</span><br><span class="line"></span><br><span class="line">提示：</span><br><span class="line">你可以假设 nums 中的所有元素是不重复的。</span><br><span class="line">n 将在 [1, 10000]之间。</span><br><span class="line">nums 的每个元素都将在 [-9999, 9999]之间。</span><br></pre></td></tr></table></figure>
 
-
-<p>示例 2:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: nums = [-1,0,3,5,9,12], target = 2</span><br><span class="line">输出: -1</span><br><span class="line">解释: 2 不存在 nums 中因此返回 -1</span><br></pre></td></tr></table></figure>
-
-<p>提示：</p>
-<p>​    你可以假设 nums 中的所有元素是不重复的。<br>​    n 将在 [1, 10000]之间。<br>​    nums 的每个元素都将在 [-9999, 9999]之间。</p>
 <p>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-search">704.二分查找</a></p>
 <h2 id="思考-amp-算法要点"><a href="#思考-amp-算法要点" class="headerlink" title="思考&amp;算法要点"></a>思考&amp;算法要点</h2><p>二分法确实比较简单，思想不用多说。但是落实到代码上，就可能会暴露一些问题：</p>
 <ul>
