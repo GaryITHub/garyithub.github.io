@@ -16,7 +16,7 @@
 <meta property="og:description" content="LeetCode–704.二分查找给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。 示例 1: 123输入: nums &#x3D; [-1,0,3,5,9,12], target &#x3D; 9输出: 4解释: 9 出现在 nums 中并且下标为 4   示例 2: 123输入: nums">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-14T06:07:29.000Z">
-<meta property="article:modified_time" content="2021-10-15T05:16:06.480Z">
+<meta property="article:modified_time" content="2021-10-15T05:18:07.309Z">
 <meta property="article:author" content="Gary">
 <meta property="article:tag" content="数组">
 <meta name="twitter:card" content="summary">
@@ -180,16 +180,11 @@
 <p>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-search">704.二分查找</a></p>
 <h2 id="思考-amp-算法要点"><a href="#思考-amp-算法要点" class="headerlink" title="思考&amp;算法要点"></a>思考&amp;算法要点</h2><p>二分法确实比较简单，思想不用多说。但是落实到代码上，就可能会暴露一些问题：</p>
 <ol>
-<li><p>因为学数据结构接触到的是递归版本的，因此起初自然而然想到递归。写到一半才发现代码的参数根本不符合递归的写法hh，因为递归不需要对数组重复传参，且需要传递更新的区间，说明我还是生疏了。</p>
-</li>
-<li><p>我对循环结束的条件还是稍微思考了一下，一开始写的是判断组中元素是否等于target，但是这样不方便整个循环的逻辑处理==</p>
-</li>
-<li><p>不过我还是意识到了区间在二分查找算法中的易错性，始终谨慎地处理边界，选择左右闭合。而且我模拟了这种分法在最后一步比较的情况：在左右指示变量重合时会发生什么？那时候被指向的元素还未与target比较，因此等号仍然成立。</p>
-</li>
-<li><p>如何计算mid的值？可能许多人会直接(left + right)/2，我一开始也这样，但是发现这两个变量可能会越界，这样就需要另外写一个代码块专门处理这个问题，虽然不难，但是会增加算法的时间复杂度(第5点会讲到)。但如果像是题解中“递增式”的计算，就从根本上避开了边界的判断，有点小妙哦…</p>
-</li>
-<li><p> 关于算法运行的时间。可能是强迫症的原因，我知道最后一个else就是等于的情况，但我还是把等于的条件写了上去，结果LeetCode报超时==把这个条件去掉后，题解才过关了。深刻体会到大O不变、测试数据多的情况下，一些纯粹的条件判断还是挺占用时间的。虽然有点无语吧，但也正因为这样，类似于DFS的算法，剪枝优化才显得尤为重要。</p>
-</li>
+<li>因为学数据结构接触到的是递归版本的，因此起初自然而然想到递归。写到一半才发现代码的参数根本不符合递归的写法hh，因为递归不需要对数组重复传参，且需要传递更新的区间，说明我还是生疏了。</li>
+<li>我对循环结束的条件还是稍微思考了一下，一开始写的是判断组中元素是否等于target，但是这样不方便整个循环的逻辑处理==</li>
+<li>不过我还是意识到了区间在二分查找算法中的易错性，始终谨慎地处理边界，选择左右闭合。而且我模拟了这种分法在最后一步比较的情况：在左右指示变量重合时会发生什么？那时候被指向的元素还未与target比较，因此等号仍然成立。</li>
+<li>如何计算mid的值？可能许多人会直接(left + right)/2，我一开始也这样，但是发现这两个变量可能会越界，这样就需要另外写一个代码块专门处理这个问题，虽然不难，但是会增加算法的时间复杂度(第5点会讲到)。但如果像是题解中“递增式”的计算，就从根本上避开了边界的判断，有点小妙哦…</li>
+<li>关于算法运行的时间。可能是强迫症的原因，我知道最后一个else就是等于的情况，但我还是把等于的条件写了上去，结果LeetCode报超时==把这个条件去掉后，题解才过关了。深刻体会到大O不变、测试数据多的情况下，一些纯粹的条件判断还是挺占用时间的。虽然有点无语吧，但也正因为这样，类似于DFS的算法，剪枝优化才显得尤为重要。</li>
 </ol>
 <h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right =nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">		</span><br><span class="line">        <span class="comment">//左闭右闭区间</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;  <span class="comment">//终止条件：==仍然有意义</span></span><br><span class="line">            <span class="keyword">int</span> mid = (left + (right - left) / <span class="number">2</span>);<span class="comment">//这种写法防止越界，不用另外处理边界问题</span></span><br><span class="line">           </span><br><span class="line">            <span class="keyword">if</span>(target &lt; nums[mid])&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(target&gt; nums[mid])&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
