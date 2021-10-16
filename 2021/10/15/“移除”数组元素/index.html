@@ -16,9 +16,10 @@
 <meta property="og:description" content="LeetCode–27.移除元素给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-15T07:33:42.000Z">
-<meta property="article:modified_time" content="2021-10-16T05:35:31.441Z">
+<meta property="article:modified_time" content="2021-10-16T07:52:06.296Z">
 <meta property="article:author" content="Gary">
 <meta property="article:tag" content="数组">
+<meta property="article:tag" content="双指针">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Gary&#39;s Blog" type="application/atom+xml">
@@ -169,22 +170,28 @@
       
         <h2 id="LeetCode–27-移除元素"><a href="#LeetCode–27-移除元素" class="headerlink" title="LeetCode–27.移除元素"></a>LeetCode–27.移除元素</h2><p><strong>给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。</strong></p>
 <span id="more"></span>
-<p><strong>说明:</strong></p>
-<p>为什么返回数值是整数，但输出的答案是数组呢?</p>
-<p>请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。</p>
-<p>你可以想象内部操作如下:</p>
+<p><strong>说明:</strong><br>为什么返回数值是整数，但输出的答案是数组呢?<br>请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。<br>你可以想象内部操作如下:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// nums 是以“引用”方式传递的。也就是说，不对实参作任何拷贝</span><br><span class="line">int len = removeElement(nums, val);</span><br><span class="line"></span><br><span class="line">// 在函数里修改输入数组对于调用者是可见的。</span><br><span class="line">// 根据你的函数返回的长度, 它会打印出数组中 该长度范围内 的所有元素。</span><br><span class="line">for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">    print(nums[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>示例1：</p>
+<br>
+示例1：
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [3,2,2,3], val = 3</span><br><span class="line">输出：2, nums = [2,2]</span><br><span class="line">解释：函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。你不需要考虑数组中超出新长度后面的元素。例如，函数返回的新长度为 2 ，而 nums = [2,2,3,3] 或 nums = [2,2,0,0]，也会被视作正确答案。</span><br></pre></td></tr></table></figure>
-<p>示例2：</p>
+<br>
+示例2：
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [0,1,2,2,3,0,4,2], val = 2</span><br><span class="line">输出：5, nums = [0,1,4,0,3]</span><br><span class="line">解释：函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。注意这五个元素可为任意顺序。你不需要考虑数组中超出新长度后面的元素。</span><br></pre></td></tr></table></figure>
+<br>
+提示：
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 &lt;= nums.length &lt;= 100</span><br><span class="line">0 &lt;= nums[i] &lt;= 50</span><br><span class="line">0 &lt;= val &lt;= 100</span><br></pre></td></tr></table></figure>
 
-<p>提示：<br>    - <code>0 &lt;= nums.length &lt;= 100</code><br>    - <code>0 &lt;= nums[i] &lt;= 50</code><br>    - <code>0 &lt;= val &lt;= 100</code></p>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-element">链接：27.移动元素</a></p>
-<h2 id="题解–经典双指针-快慢指针"><a href="#题解–经典双指针-快慢指针" class="headerlink" title="题解–经典双指针(快慢指针)"></a>题解–经典双指针(快慢指针)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123;</span><br><span class="line">        int slowIndex = 0;//慢指针，会停留在发现val的地方</span><br><span class="line"></span><br><span class="line">        for(int fastIndex = 0;fastIndex&lt;nums.size();fastIndex++)&#123;//快指针只用用来遍历</span><br><span class="line">            if(nums[fastIndex]!=val)&#123;//快指针只会用不同于val的值覆盖前面的值</span><br><span class="line">                nums[slowIndex] = nums[fastIndex];//只有正常情况时快慢指针才是同步的</span><br><span class="line">                slowIndex++;//慢指针确保左边的每一个元素都符合要求后才继续前进</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return slowIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="选哪种双指针？"><a href="#选哪种双指针？" class="headerlink" title="选哪种双指针？"></a>选哪种双指针？</h2><p>　　做这道题时我是第一次在LeetCode接触“双指针”，然而双指针其实有挺多种含义。就像这道题，快慢指针是经典解法，而首尾指针是优化解法。读完题目，我其实想到的是类似于首尾指针的解法，而不是经典的快慢指针——我认为首尾指针更符合删除元素的应用场景，而快慢指针可能只是通用思想。写完看题解，发现官方也是推荐首尾指针。当然，具体的原因是因为快慢指针在最坏情况下可能会进行不必要的元素覆盖操作，而首尾指针可以一步到位。</p>
+<h2 id="题解–经典双指针-快慢指针"><a href="#题解–经典双指针-快慢指针" class="headerlink" title="题解–经典双指针(快慢指针)"></a>题解–经典双指针(快慢指针)</h2><h3 id="指针的作用是什么？"><a href="#指针的作用是什么？" class="headerlink" title="指针的作用是什么？"></a>指针的作用是什么？</h3><p>　　我特别思考了这两种指针(不是两个，即快慢指针和首尾指针)的作用。快指针在这道题里面相当于for循环经常定义的i，负责遍历数据，顺便看看当下遍历到的元素是不是val，再进行赋值等操作；满慢指针则是一个检查的角色，它的任务是确保当前指向的元素被非val的元素替换后才移动到下一步。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123;</span><br><span class="line">        int slowIndex = 0;//慢指针，会停留在发现val的地方</span><br><span class="line"></span><br><span class="line">        for(int fastIndex = 0;fastIndex&lt;nums.size();fastIndex++)&#123;//快指针只用用来遍历</span><br><span class="line">            if(nums[fastIndex]!=val)&#123;//快指针只会用不同于val的值覆盖前面的值</span><br><span class="line">                nums[slowIndex] = nums[fastIndex];//只有正常情况时快慢指针才是同步的</span><br><span class="line">                slowIndex++;//慢指针确保左边的每一个元素都符合要求后才继续前进</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return slowIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h2 id="题解–双指针优化-首尾指针"><a href="#题解–双指针优化-首尾指针" class="headerlink" title="题解–双指针优化(首尾指针)"></a>题解–双指针优化(首尾指针)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = nums.size() - 1;</span><br><span class="line"></span><br><span class="line">        while(left&lt;=right)&#123;</span><br><span class="line">            if(nums[left]!=val)&#123;//正常的情况，left只需要向前进</span><br><span class="line">                left++;//注意在判断一个正常的元素后，left再加1时已经是新数据的长度！！！</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;  //nums[left]==val</span><br><span class="line">                nums[left] = nums[right--];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="题解–双指针优化-首尾指针"><a href="#题解–双指针优化-首尾指针" class="headerlink" title="题解–双指针优化(首尾指针)"></a>题解–双指针优化(首尾指针)</h2><h3 id="首尾指针与快慢指针在作用上的区别是什么？"><a href="#首尾指针与快慢指针在作用上的区别是什么？" class="headerlink" title="首尾指针与快慢指针在作用上的区别是什么？"></a>首尾指针与快慢指针在作用上的区别是什么？</h3><ul>
+<li>遍历：首尾指针均有双向遍历的责任，当重合时合计遍历一次即停止；而快慢指针几乎需要把同一个数组遍历两次。快指针从前往后扫描非val的值以备慢指针替换，<strong>但是慢指针遍历过的快指针其实也遍历过，</strong>而尾指针从后往前扫描非val的值以备首指针替换，扫描路径不重复。</li>
+<li>元素顺序：快慢指针是“稳定”的算法，不会改变元素相对位置。但题目却提示我们元素顺序不要紧，这暗示了元素覆盖或许是一个优化的方向。因此首尾指针不在乎前后元素的顺序，尾指针只需要确保它遍历过的元素都被“用过并存在了前面的区间”，是否重复，无关紧要。</li>
+<li>联系：首指针和慢指针的作用是一样的，都是为了确保它指向的元素一定符合题意才移动到下一个。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int removeElement(vector&lt;int&gt;&amp; nums, int val) &#123;</span><br><span class="line">        int left = 0;</span><br><span class="line">        int right = nums.size() - 1;</span><br><span class="line"></span><br><span class="line">        while(left&lt;=right)&#123;</span><br><span class="line">            if(nums[left]!=val)&#123;//正常的情况，left只需要向前进</span><br><span class="line">                left++;//注意在判断一个正常的元素后，left再加1时已经是新数据的长度！！！</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;  //nums[left]==val</span><br><span class="line">                nums[left] = nums[right--];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
 
       
 
@@ -220,6 +227,10 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数组</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">双指针</a>
         		</li>
       		
 		</ul>
@@ -417,11 +428,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tag1</a>
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+                <a href="javascript:void(0)" class="js-tag color4">双指针</a>
               </li>
             
             <div class="clearfix"></div>
